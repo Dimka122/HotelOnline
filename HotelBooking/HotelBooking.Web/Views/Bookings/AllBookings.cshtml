@@ -29,7 +29,7 @@
                         <td>@booking.HotelName</td>
                         <td>@booking.RoomNumber</td>
                         <td>@booking.CheckInDate.ToString("dd.MM.yyyy") - @booking.CheckOutDate.ToString("dd.MM.yyyy")</td>
-                        <td>@booking.TotalPrice.ToString("C")</td>
+                        <td>@booking.TotalPrice</td>
                         <td>
                             <span class="badge @(booking.Status == "Confirmed" ? "bg-success" : "bg-warning")">
                                 @booking.Status

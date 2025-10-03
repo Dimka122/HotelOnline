@@ -34,7 +34,7 @@
                                 </span>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="text-primary">@booking.TotalPrice.ToString("C")</h5>
+                                <h5 class="text-primary">@booking.TotalPrice</h5>
                                 @if (booking.Status == "Confirmed")
                                 {
                                     <form asp-action="Cancel" method="post">

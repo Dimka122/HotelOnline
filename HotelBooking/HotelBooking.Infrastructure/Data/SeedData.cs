@@ -77,20 +77,20 @@ namespace HotelBooking.Infrastructure.Data
                     new Hotel
                     {
                         Name = "Grand Hotel",
-                        Address = "Moscow, Tverskaya st. 1",
+                        Address = "Madrid, Trastee st. 1",
                         Description = "Luxury hotel in the city center",
                         ImageUrl = "https://via.placeholder.com/400x250/3B82F6/FFFFFF?text=Grand+Hotel",
                         Rooms = new List<Room>
                         {
-                            new Room { Number = "101", PricePerNight = 5000, Capacity = 2, Description = "Standard Room with city view", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+101" },
-                            new Room { Number = "102", PricePerNight = 7500, Capacity = 3, Description = "Deluxe Room with balcony", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+102" },
-                            new Room { Number = "201", PricePerNight = 12000, Capacity = 2, Description = "Luxury Suite", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Suite+201" }
+                            new Room { Number = "101", PricePerNight = 500, Capacity = 2, Description = "Standard Room with city view", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+101" },
+                            new Room { Number = "102", PricePerNight = 750, Capacity = 3, Description = "Deluxe Room with balcony", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+102" },
+                            new Room { Number = "201", PricePerNight = 1200, Capacity = 2, Description = "Luxury Suite", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Suite+201" }
                         }
                     },
                     new Hotel
                     {
                         Name = "Business Hotel",
-                        Address = "St. Petersburg, Nevsky Prospect 25",
+                        Address = "New York, Brayton Beach 25",
                         Description = "Comfortable hotel for business travelers",
                         ImageUrl = "https://via.placeholder.com/400x250/10B981/FFFFFF?text=Business+Hotel",
                         Rooms = new List<Room>
@@ -103,7 +103,7 @@ namespace HotelBooking.Infrastructure.Data
                     new Hotel
                     {
                         Name = "Seaside Resort",
-                        Address = "Sochi, Kurortny prospect 50",
+                        Address = "Gavai, Kurort avenyu 50",
                         Description = "Beautiful resort by the sea",
                         ImageUrl = "https://via.placeholder.com/400x250/F59E0B/FFFFFF?text=Seaside+Resort",
                         Rooms = new List<Room>
