@@ -20,7 +20,7 @@ namespace HotelBooking.Infrastructure.Services
 
         public async Task<object> GetBookingStatisticsAsync(DateTime startDate, DateTime endDate)
         {
-            using var connection = new MySqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+            using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
             var sql = @"
                 SELECT 

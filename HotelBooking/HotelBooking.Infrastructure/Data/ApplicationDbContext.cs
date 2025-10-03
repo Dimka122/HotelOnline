@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HotelBooking.Domain.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using HotelBooking.Domain.Entities;
 
 namespace HotelBooking.Infrastructure.Data
 {
@@ -29,7 +24,8 @@ namespace HotelBooking.Infrastructure.Data
                 entity.Property(h => h.Address).IsRequired().HasMaxLength(200);
                 entity.HasMany(h => h.Rooms)
                       .WithOne(r => r.Hotel)
-                      .HasForeignKey(r => r.HotelId);
+                      .HasForeignKey(r => r.HotelId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             builder.Entity<Room>(entity =>
@@ -39,7 +35,8 @@ namespace HotelBooking.Infrastructure.Data
                 entity.Property(r => r.PricePerNight).HasColumnType("decimal(18,2)");
                 entity.HasMany(r => r.Bookings)
                       .WithOne(b => b.Room)
-                      .HasForeignKey(b => b.RoomId);
+                      .HasForeignKey(b => b.RoomId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
 
             builder.Entity<Booking>(entity =>
@@ -50,7 +47,8 @@ namespace HotelBooking.Infrastructure.Data
 
                 entity.HasOne(b => b.User)
                       .WithMany(u => u.Bookings)
-                      .HasForeignKey(b => b.UserId);
+                      .HasForeignKey(b => b.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
             });
         }
     }
