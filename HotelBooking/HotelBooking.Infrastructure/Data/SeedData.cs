@@ -74,7 +74,7 @@ namespace HotelBooking.Infrastructure.Data
             {
                 var hotels = new List<Hotel>
                 {
-                    // Обновите адреса отелей
+                    
 new Hotel
 {
     Name = "Grand Hotel",
@@ -93,7 +93,7 @@ new Hotel
     Name = "Business Hotel",
     Address = "Chicago, Michigan Avenue, 456",
     Description = "Comfortable hotel for business travelers",
-    ImageUrl = "https://via.placeholder.com/400x250/10B981/FFFFFF?text=Business+Hotel",
+    ImageUrl = "https://media.istockphoto.com/id/104731717/ru/%D1%84%D0%BE%D1%82%D0%BE/%D0%BA%D1%83%D1%80%D0%BE%D1%80%D1%82-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D0%B0-%D0%BB%D1%8E%D0%BA%D1%81.jpg?s=612x612&w=0&k=20&c=g5-HTI-EuyFB2gfcGsB7g6KoAE3xYUQGsESWLTa7-3A=",
     Rooms = new List<Room>
     {
         new Room { Number = "101", PricePerNight = 100, Capacity = 1, Description = "Single Room for business travelers", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+101" },

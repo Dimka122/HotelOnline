@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelBooking.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251003195809_UpdateHotelAddresses")]
+    [Migration("20251003201017_UpdateHotelAddresses")]
     partial class UpdateHotelAddresses
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
