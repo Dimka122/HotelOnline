@@ -13,5 +13,6 @@ namespace HotelBooking.Application.Interfaces
         Task<IEnumerable<BookingDto>> GetUserBookingsAsync(string userId);
         Task<IEnumerable<BookingDto>> GetAllBookingsAsync();
         Task CancelBookingAsync(int bookingId);
+        Task<BookingDto> GetBookingByIdAsync(int bookingId);
     }
 }

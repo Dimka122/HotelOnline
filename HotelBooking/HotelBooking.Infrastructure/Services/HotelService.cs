@@ -1,37 +1,18 @@
-﻿using Dapper;
-using HotelBooking.Application.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
 using HotelBooking.Application.Interfaces;
+using HotelBooking.Application.DTOs;
+using HotelBooking.Domain.Entities;
 using HotelBooking.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using MySqlConnector;
 
 namespace HotelBooking.Infrastructure.Services
 {
     public class HotelService : IHotelService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IConfiguration _configuration;
 
-        public HotelService(ApplicationDbContext context, IConfiguration configuration)
+        public HotelService(ApplicationDbContext context)
         {
             _context = context;
-            _configuration = configuration;
-        }
-
-        public Task CreateHotelAsync(HotelDto hotelDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteHotelAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HotelDto> GetHotelByIdAsync(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<HotelDto>> GetHotelsAsync()
@@ -54,6 +35,28 @@ namespace HotelBooking.Infrastructure.Services
             return hotels;
         }
 
+        public async Task<HotelDto> GetHotelByIdAsync(int id)
+        {
+            var hotel = await _context.Hotels
+                .Include(h => h.Rooms)
+                .FirstOrDefaultAsync(h => h.Id == id);
+
+            if (hotel == null)
+                return null;
+
+            return new HotelDto
+            {
+                Id = hotel.Id,
+                Name = hotel.Name,
+                Address = hotel.Address,
+                Description = hotel.Description,
+                ImageUrl = hotel.ImageUrl,
+                RoomCount = hotel.Rooms.Count,
+                MinPrice = hotel.Rooms.Any() ? hotel.Rooms.Min(r => r.PricePerNight) : 0,
+                MaxPrice = hotel.Rooms.Any() ? hotel.Rooms.Max(r => r.PricePerNight) : 0
+            };
+        }
+
         public async Task<IEnumerable<RoomDto>> SearchRoomsAsync(string city, DateTime checkIn, DateTime checkOut, int guests)
         {
             var availableRooms = await _context.Rooms
@@ -62,10 +65,10 @@ namespace HotelBooking.Infrastructure.Services
                 .Where(r => r.Hotel.Address.Contains(city) &&
                            r.Capacity >= guests &&
                            !r.Bookings.Any(b =>
-                               (checkIn >= b.CheckInDate && checkIn < b.CheckOutDate) ||
-                               (checkOut > b.CheckInDate && checkOut <= b.CheckOutDate) ||
-                               (checkIn <= b.CheckInDate && checkOut >= b.CheckOutDate) &&
-                               b.Status == "Confirmed"))
+                               b.Status == "Confirmed" &&
+                               ((checkIn >= b.CheckInDate && checkIn < b.CheckOutDate) ||
+                                (checkOut > b.CheckInDate && checkOut <= b.CheckOutDate) ||
+                                (checkIn <= b.CheckInDate && checkOut >= b.CheckOutDate))))
                 .Select(r => new RoomDto
                 {
                     Id = r.Id,
@@ -83,11 +86,64 @@ namespace HotelBooking.Infrastructure.Services
             return availableRooms;
         }
 
-        public Task UpdateHotelAsync(HotelDto hotelDto)
+        public async Task CreateHotelAsync(HotelDto hotelDto)
         {
-            throw new NotImplementedException();
+            var hotel = new Hotel
+            {
+                Name = hotelDto.Name,
+                Address = hotelDto.Address,
+                Description = hotelDto.Description,
+                ImageUrl = hotelDto.ImageUrl
+            };
+
+            _context.Hotels.Add(hotel);
+            await _context.SaveChangesAsync();
         }
 
-        // Другие методы реализации...
+        public async Task UpdateHotelAsync(HotelDto hotelDto)
+        {
+            var hotel = await _context.Hotels.FindAsync(hotelDto.Id);
+            if (hotel != null)
+            {
+                hotel.Name = hotelDto.Name;
+                hotel.Address = hotelDto.Address;
+                hotel.Description = hotelDto.Description;
+                hotel.ImageUrl = hotelDto.ImageUrl;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteHotelAsync(int id)
+        {
+            var hotel = await _context.Hotels.FindAsync(id);
+            if (hotel != null)
+            {
+                _context.Hotels.Remove(hotel);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<RoomDto> GetRoomByIdAsync(int roomId)
+        {
+            var room = await _context.Rooms
+                .Include(r => r.Hotel)
+                .FirstOrDefaultAsync(r => r.Id == roomId);
+
+            if (room == null)
+                return null;
+
+            return new RoomDto
+            {
+                Id = room.Id,
+                HotelId = room.HotelId,
+                HotelName = room.Hotel.Name,
+                Number = room.Number,
+                PricePerNight = room.PricePerNight,
+                Capacity = room.Capacity,
+                Description = room.Description,
+                ImageUrl = room.ImageUrl
+            };
+        }
     }
 }

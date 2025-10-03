@@ -12,6 +12,7 @@ namespace HotelBooking.Application.Interfaces
         Task<IEnumerable<HotelDto>> GetHotelsAsync();
         Task<HotelDto> GetHotelByIdAsync(int id);
         Task<IEnumerable<RoomDto>> SearchRoomsAsync(string city, DateTime checkIn, DateTime checkOut, int guests);
+        Task<RoomDto> GetRoomByIdAsync(int roomId);
         Task CreateHotelAsync(HotelDto hotelDto);
         Task UpdateHotelAsync(HotelDto hotelDto);
         Task DeleteHotelAsync(int id);
