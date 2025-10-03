@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Domain.Enums
 {
-    internal class Roles
+    public static class Roles
     {
+        public const string Client = "Client";
+        public const string Administrator = "Administrator";
     }
 }
