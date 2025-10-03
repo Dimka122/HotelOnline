@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HotelBooking.Infrastructure.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class UpdateHotelAddresses : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

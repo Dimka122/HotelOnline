@@ -74,45 +74,58 @@ namespace HotelBooking.Infrastructure.Data
             {
                 var hotels = new List<Hotel>
                 {
-                    new Hotel
-                    {
-                        Name = "Grand Hotel",
-                        Address = "Madrid, Trastee st. 1",
-                        Description = "Luxury hotel in the city center",
-                        ImageUrl = "https://via.placeholder.com/400x250/3B82F6/FFFFFF?text=Grand+Hotel",
-                        Rooms = new List<Room>
-                        {
-                            new Room { Number = "101", PricePerNight = 500, Capacity = 2, Description = "Standard Room with city view", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+101" },
-                            new Room { Number = "102", PricePerNight = 750, Capacity = 3, Description = "Deluxe Room with balcony", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+102" },
-                            new Room { Number = "201", PricePerNight = 1200, Capacity = 2, Description = "Luxury Suite", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Suite+201" }
-                        }
-                    },
-                    new Hotel
-                    {
-                        Name = "Business Hotel",
-                        Address = "New York, Brayton Beach 25",
-                        Description = "Comfortable hotel for business travelers",
-                        ImageUrl = "https://via.placeholder.com/400x250/10B981/FFFFFF?text=Business+Hotel",
-                        Rooms = new List<Room>
-                        {
-                            new Room { Number = "101", PricePerNight = 350, Capacity = 1, Description = "Single Room for business travelers", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+101" },
-                            new Room { Number = "102", PricePerNight = 450, Capacity = 2, Description = "Double Room with workspace", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+102" },
-                            new Room { Number = "103", PricePerNight = 600, Capacity = 2, Description = "Executive Room", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+103" }
-                        }
-                    },
-                    new Hotel
-                    {
-                        Name = "Seaside Resort",
-                        Address = "Gavai, Kurort avenyu 50",
-                        Description = "Beautiful resort by the sea",
-                        ImageUrl = "https://via.placeholder.com/400x250/F59E0B/FFFFFF?text=Seaside+Resort",
-                        Rooms = new List<Room>
-                        {
-                            new Room { Number = "101", PricePerNight = 800, Capacity = 4, Description = "Family Room with sea view", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Room+101" },
-                            new Room { Number = "201", PricePerNight = 1500, Capacity = 2, Description = "Premium Suite with jacuzzi", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Suite+201" },
-                            new Room { Number = "301", PricePerNight = 2000, Capacity = 3, Description = "Presidential Suite", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Presidential+Suite" }
-                        }
-                    }
+                    // Обновите адреса отелей
+new Hotel
+{
+    Name = "Grand Hotel",
+    Address = "New York, 5th Avenue, 123",
+    Description = "Luxury hotel in the city center",
+    ImageUrl = "https://www.menslife.com/upload/iblock/4f1/marina_bay_sands_hotel_casino_skypark_singapore_from_waterfront_esplanade.jpg",
+    Rooms = new List<Room>
+    {
+        new Room { Number = "101", PricePerNight = 150, Capacity = 2, Description = "Standard Room with city view", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+101" },
+        new Room { Number = "102", PricePerNight = 220, Capacity = 3, Description = "Deluxe Room with balcony", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Room+102" },
+        new Room { Number = "201", PricePerNight = 350, Capacity = 2, Description = "Luxury Suite", ImageUrl = "https://via.placeholder.com/300x200/60A5FA/FFFFFF?text=Suite+201" }
+    }
+},
+new Hotel
+{
+    Name = "Business Hotel",
+    Address = "Chicago, Michigan Avenue, 456",
+    Description = "Comfortable hotel for business travelers",
+    ImageUrl = "https://via.placeholder.com/400x250/10B981/FFFFFF?text=Business+Hotel",
+    Rooms = new List<Room>
+    {
+        new Room { Number = "101", PricePerNight = 100, Capacity = 1, Description = "Single Room for business travelers", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+101" },
+        new Room { Number = "102", PricePerNight = 130, Capacity = 2, Description = "Double Room with workspace", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+102" },
+        new Room { Number = "103", PricePerNight = 180, Capacity = 2, Description = "Executive Room", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+103" }
+    }
+},
+new Hotel
+{
+    Name = "Seaside Resort",
+    Address = "Miami, Ocean Drive, 789",
+    Description = "Beautiful resort by the sea",
+    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtamRgMUwfshF0lNyeOf7r2SeoLpWfPoLRrA&s",
+    Rooms = new List<Room>
+    {
+        new Room { Number = "101", PricePerNight = 240, Capacity = 4, Description = "Family Room with sea view", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Room+101" },
+        new Room { Number = "201", PricePerNight = 450, Capacity = 2, Description = "Premium Suite with jacuzzi", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Suite+201" },
+        new Room { Number = "301", PricePerNight = 600, Capacity = 3, Description = "Presidential Suite", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Presidential+Suite" }
+    }
+},
+new Hotel
+{
+    Name = "Mountain View Lodge",
+    Address = "Denver, Mountain Road, 321",
+    Description = "Cozy lodge with mountain views",
+    ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjOjAAHxzzpJuvlc8ASF8xmt-nuiyaCY0FYg&s",
+    Rooms = new List<Room>
+    {
+        new Room { Number = "101", PricePerNight = 120, Capacity = 2, Description = "Standard Mountain View Room", ImageUrl = "https://via.placeholder.com/300x200/A78BFA/FFFFFF?text=Room+101" },
+        new Room { Number = "201", PricePerNight = 200, Capacity = 4, Description = "Family Suite with fireplace", ImageUrl = "https://via.placeholder.com/300x200/A78BFA/FFFFFF?text=Suite+201" }
+    }
+}
                 };
 
                 await context.Hotels.AddRangeAsync(hotels);

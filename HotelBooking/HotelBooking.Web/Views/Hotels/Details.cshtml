@@ -11,10 +11,10 @@
             <p>@Model.Description</p>
 
             <div class="mt-4">
-                <h4>Информация об отеле</h4>
+                <h4>Hotel Information</h4>
                 <ul>
-                    <li>Количество номеров: @Model.RoomCount</li>
-                    <li>Цены от: @Model.MinPrice.ToString("C") до @Model.MaxPrice.ToString("C")</li>
+                    <li>Number of rooms: @Model.RoomCount</li>
+                    <li>Prices from: $@Model.MinPrice to $@Model.MaxPrice</li>
                 </ul>
             </div>
         </div>
@@ -24,6 +24,6 @@
     </div>
 
     <div class="mt-4">
-        <a href="/Hotels" class="btn btn-secondary">← Назад к списку отелей</a>
+        <a href="/Hotels" class="btn btn-secondary">← Back to hotels list</a>
     </div>
 </div>

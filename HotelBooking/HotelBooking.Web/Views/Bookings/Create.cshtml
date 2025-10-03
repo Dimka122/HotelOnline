@@ -1,24 +1,24 @@
 ﻿@model HotelBooking.Application.DTOs.CreateBookingDto
 @{
     var room = ViewBag.Room as HotelBooking.Application.DTOs.RoomDto;
-    ViewData["Title"] = "Бронирование номера";
+    ViewData["Title"] = "Book Room";
 }
 
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
-            <h2>Бронирование номера</h2>
+            <h2>Book Room</h2>
 
             @if (room != null)
             {
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Номер @room.Number</h5>
+                        <h5 class="card-title">Room @room.Number</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@room.HotelName</h6>
                         <p class="card-text">@room.Description</p>
                         <p class="card-text">
-                            <strong>Вместимость:</strong> @room.Capacity человека<br>
-                            <strong>Цена за ночь:</strong> <span class="text-primary h5">@room.PricePerNight.ToString("C")</span>
+                            <strong>Capacity:</strong> @room.Capacity persons<br>
+                            <strong>Price per night:</strong> <span class="text-primary h5">$@room.PricePerNight</span>
                         </p>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label asp-for="CheckInDate" class="form-label">Дата заезда</label>
+                            <label asp-for="CheckInDate" class="form-label">Check-in Date</label>
                             <input asp-for="CheckInDate" type="date" class="form-control"
                                    min="@DateTime.Now.ToString("yyyy-MM-dd")"
                                    onchange="calculateTotal()" required />
@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label asp-for="CheckOutDate" class="form-label">Дата выезда</label>
+                            <label asp-for="CheckOutDate" class="form-label">Check-out Date</label>
                             <input asp-for="CheckOutDate" type="date" class="form-control"
                                    min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
                                    onchange="calculateTotal()" required />
@@ -50,16 +50,16 @@
 
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5>Стоимость бронирования</h5>
+                        <h5>Booking Cost</h5>
                         <div id="priceDetails">
-                            <p>Выберите даты для расчета стоимости</p>
+                            <p>Select dates to calculate total cost</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-success btn-lg">Забронировать</button>
-                    <a href="/Hotels" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn btn-success btn-lg">Book Now</button>
+                    <a href="/Hotels" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>
@@ -79,14 +79,14 @@
                 const totalPrice = nights * pricePerNight;
 
                 document.getElementById('priceDetails').innerHTML = `
-                    <p><strong>Количество ночей:</strong> ${nights}</p>
-                    <p><strong>Цена за ночь:</strong> ${pricePerNight}</p>
-                    <h4 class="text-success"><strong>Итого: ${totalPrice}</strong></h4>
+                    <p><strong>Number of nights:</strong> ${nights}</p>
+                    <p><strong>Price per night:</strong> $${pricePerNight}</p>
+                    <h4 class="text-success"><strong>Total: $${totalPrice}</strong></h4>
                 `;
             }
         }
 
-        // Автоматический расчет при загрузке страницы, если даты уже выбраны
+        // Auto-calculate on page load if dates are already selected
         document.addEventListener('DOMContentLoaded', function() {
             calculateTotal();
         });

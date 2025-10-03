@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<HotelBooking.Application.DTOs.BookingDto>
 @{
-    ViewData["Title"] = "Мои бронирования";
+    ViewData["Title"] = "My Bookings";
 }
 
 <div class="container mt-4">
-    <h2>Мои бронирования</h2>
+    <h2>My Bookings</h2>
 
     @if (!Model.Any())
     {
         <div class="alert alert-info">
-            <h4>У вас пока нет бронирований</h4>
-            <p>Найдите подходящий отель и забронируйте номер!</p>
-            <a href="/Hotels" class="btn btn-primary">Найти отель</a>
+            <h4>You don't have any bookings yet</h4>
+            <p>Find a suitable hotel and book a room!</p>
+            <a href="/Hotels" class="btn btn-primary">Find Hotel</a>
         </div>
     }
     else
@@ -22,31 +22,31 @@
                 <div class="col-md-6 mb-4">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5 class="card-title">Бронирование #@booking.Id</h5>
+                            <h5 class="card-title">Booking #@booking.Id</h5>
                             <p class="card-text">
-                                <strong>Отель:</strong> @booking.HotelName<br>
-                                <strong>Номер:</strong> @booking.RoomNumber<br>
-                                <strong>Заезд:</strong> @booking.CheckInDate.ToString("dd.MM.yyyy")<br>
-                                <strong>Выезд:</strong> @booking.CheckOutDate.ToString("dd.MM.yyyy")<br>
-                                <strong>Статус:</strong>
+                                <strong>Hotel:</strong> @booking.HotelName<br>
+                                <strong>Room:</strong> @booking.RoomNumber<br>
+                                <strong>Check-in:</strong> @booking.CheckInDate.ToString("MM/dd/yyyy")<br>
+                                <strong>Check-out:</strong> @booking.CheckOutDate.ToString("MM/dd/yyyy")<br>
+                                <strong>Status:</strong>
                                 <span class="badge @(booking.Status == "Confirmed" ? "bg-success" : "bg-warning")">
                                     @booking.Status
                                 </span>
                             </p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="text-primary">@booking.TotalPrice</h5>
+                                <h5 class="text-primary">$@booking.TotalPrice</h5>
                                 @if (booking.Status == "Confirmed")
                                 {
                                     <form asp-action="Cancel" method="post">
                                         <input type="hidden" name="id" value="@booking.Id" />
                                         <button type="submit" class="btn btn-outline-danger btn-sm"
-                                                onclick="return confirm('Вы уверены, что хотите отменить бронирование?')">
-                                            Отменить
+                                                onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                            Cancel
                                         </button>
                                     </form>
                                 }
                             </div>
-                            <small class="text-muted">Создано: @booking.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                            <small class="text-muted">Created: @booking.CreatedAt.ToString("MM/dd/yyyy HH:mm")</small>
                         </div>
                     </div>
                 </div>

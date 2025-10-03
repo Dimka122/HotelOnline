@@ -1,47 +1,47 @@
 ﻿@model IEnumerable<HotelBooking.Application.DTOs.HotelDto>
 @{
-    ViewData["Title"] = "Отели";
+    ViewData["Title"] = "Hotels";
 }
 
 <div class="container mt-4">
-    <h2>Наши отели</h2>
+    <h2>Our Hotels</h2>
 
-    <!-- Форма поиска -->
+    <!-- Search form -->
     <div class="card mb-4">
         <div class="card-body">
-            <h5 class="card-title">Поиск номеров</h5>
+            <h5 class="card-title">Search Rooms</h5>
             <form asp-action="Search" method="post">
                 <div class="row g-3">
                     <div class="col-md-3">
-                        <label for="city" class="form-label">Город</label>
-                        <input type="text" class="form-control" id="city" name="city" placeholder="Введите город" required>
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="checkIn" class="form-label">Заезд</label>
+                        <label for="checkIn" class="form-label">Check-in</label>
                         <input type="date" class="form-control" id="checkIn" name="checkIn" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="checkOut" class="form-label">Выезд</label>
+                        <label for="checkOut" class="form-label">Check-out</label>
                         <input type="date" class="form-control" id="checkOut" name="checkOut" required>
                     </div>
                     <div class="col-md-2">
-                        <label for="guests" class="form-label">Гости</label>
+                        <label for="guests" class="form-label">Guests</label>
                         <select class="form-select" id="guests" name="guests">
-                            <option value="1">1 гость</option>
-                            <option value="2" selected>2 гостя</option>
-                            <option value="3">3 гостя</option>
-                            <option value="4">4 гостя</option>
+                            <option value="1">1 guest</option>
+                            <option value="2" selected>2 guests</option>
+                            <option value="3">3 guests</option>
+                            <option value="4">4 guests</option>
                         </select>
                     </div>
                     <div class="col-md-3 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Найти номера</button>
+                        <button type="submit" class="btn btn-primary w-100">Search Rooms</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Список отелей -->
+    <!-- Hotels list -->
     <div class="row">
         @foreach (var hotel in Model)
         {
@@ -53,10 +53,10 @@
                         <p class="card-text text-muted">@hotel.Address</p>
                         <p class="card-text">@hotel.Description</p>
                         <div class="mb-2">
-                            <span class="badge bg-info">@hotel.RoomCount номеров</span>
-                            <span class="badge bg-success">от @hotel.MinPrice</span>
+                            <span class="badge bg-info">@hotel.RoomCount rooms</span>
+                            <span class="badge bg-success">from $@hotel.MinPrice</span>
                         </div>
-                        <a href="/Hotels/Details/@hotel.Id" class="btn btn-outline-primary">Подробнее</a>
+                        <a href="/Hotels/Details/@hotel.Id" class="btn btn-outline-primary">View Details</a>
                     </div>
                 </div>
             </div>
@@ -66,12 +66,12 @@
 
 @section Scripts {
     <script>
-        // Установка минимальной даты - сегодня
+        // Set minimum date - today
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('checkIn').min = today;
         document.getElementById('checkOut').min = today;
 
-        // Автоматическая установка даты выезда
+        // Auto-set check-out date
         document.getElementById('checkIn').addEventListener('change', function() {
             const checkIn = new Date(this.value);
             const checkOut = new Date(checkIn);
