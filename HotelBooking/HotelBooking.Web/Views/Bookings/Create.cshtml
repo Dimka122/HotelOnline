@@ -1,0 +1,94 @@
+﻿@model HotelBooking.Application.DTOs.CreateBookingDto
+@{
+    var room = ViewBag.Room as HotelBooking.Application.DTOs.RoomDto;
+    ViewData["Title"] = "Бронирование номера";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Бронирование номера</h2>
+
+            @if (room != null)
+            {
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Номер @room.Number</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@room.HotelName</h6>
+                        <p class="card-text">@room.Description</p>
+                        <p class="card-text">
+                            <strong>Вместимость:</strong> @room.Capacity человека<br>
+                            <strong>Цена за ночь:</strong> <span class="text-primary h5">@room.PricePerNight.ToString("C")</span>
+                        </p>
+                    </div>
+                </div>
+            }
+
+            <form asp-action="Create" method="post">
+                <input type="hidden" asp-for="RoomId" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="CheckInDate" class="form-label">Дата заезда</label>
+                            <input asp-for="CheckInDate" type="date" class="form-control"
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   onchange="calculateTotal()" required />
+                            <span asp-validation-for="CheckInDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="CheckOutDate" class="form-label">Дата выезда</label>
+                            <input asp-for="CheckOutDate" type="date" class="form-control"
+                                   min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                                   onchange="calculateTotal()" required />
+                            <span asp-validation-for="CheckOutDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5>Стоимость бронирования</h5>
+                        <div id="priceDetails">
+                            <p>Выберите даты для расчета стоимости</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg">Забронировать</button>
+                    <a href="/Hotels" class="btn btn-secondary">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const pricePerNight = @room?.PricePerNight ?? 0;
+
+        function calculateTotal() {
+            const checkIn = new Date(document.getElementById('CheckInDate').value);
+            const checkOut = new Date(document.getElementById('CheckOutDate').value);
+
+            if (checkIn && checkOut && checkOut > checkIn) {
+                const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                const totalPrice = nights * pricePerNight;
+
+                document.getElementById('priceDetails').innerHTML = `
+                    <p><strong>Количество ночей:</strong> ${nights}</p>
+                    <p><strong>Цена за ночь:</strong> ${pricePerNight.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'})}</p>
+                    <h4 class="text-success"><strong>Итого: ${totalPrice.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'})}</strong></h4>
+                `;
+            }
+        }
+
+        // Автоматический расчет при загрузке страницы, если даты уже выбраны
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateTotal();
+        });
+    </script>
+}

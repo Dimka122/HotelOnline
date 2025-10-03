@@ -1,0 +1,55 @@
+﻿@model IEnumerable<HotelBooking.Application.DTOs.BookingDto>
+@{
+    ViewData["Title"] = "Все бронирования";
+}
+
+<div class="container mt-4">
+    <h2>Все бронирования</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Пользователь</th>
+                    <th>Отель</th>
+                    <th>Номер</th>
+                    <th>Даты</th>
+                    <th>Стоимость</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.Id</td>
+                        <td>@booking.UserEmail</td>
+                        <td>@booking.HotelName</td>
+                        <td>@booking.RoomNumber</td>
+                        <td>@booking.CheckInDate.ToString("dd.MM.yyyy") - @booking.CheckOutDate.ToString("dd.MM.yyyy")</td>
+                        <td>@booking.TotalPrice.ToString("C")</td>
+                        <td>
+                            <span class="badge @(booking.Status == "Confirmed" ? "bg-success" : "bg-warning")">
+                                @booking.Status
+                            </span>
+                        </td>
+                        <td>
+                            @if (booking.Status == "Confirmed")
+                            {
+                                <form asp-action="Cancel" method="post" class="d-inline">
+                                    <input type="hidden" name="id" value="@booking.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"
+                                            onclick="return confirm('Отменить бронирование?')">
+                                        Отменить
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

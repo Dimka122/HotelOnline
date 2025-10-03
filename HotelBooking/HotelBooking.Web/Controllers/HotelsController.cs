@@ -28,6 +28,16 @@ namespace HotelBooking.Web.Controllers
             return View("SearchResults", rooms);
         }
 
+        public async Task<IActionResult> Details(int id)
+        {
+            var hotel = await _hotelService.GetHotelByIdAsync(id);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+            return View(hotel);
+        }
+
         [Authorize(Roles = Roles.Administrator)]
         public IActionResult Create()
         {

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<HotelBooking.Application.DTOs.HotelDto>
+@{
+    ViewData["Title"] = "Отели";
+}
+
+<div class="container mt-4">
+    <h2>Наши отели</h2>
+
+    <!-- Форма поиска -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Поиск номеров</h5>
+            <form asp-action="Search" method="post">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="city" class="form-label">Город</label>
+                        <input type="text" class="form-control" id="city" name="city" placeholder="Введите город" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="checkIn" class="form-label">Заезд</label>
+                        <input type="date" class="form-control" id="checkIn" name="checkIn" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="checkOut" class="form-label">Выезд</label>
+                        <input type="date" class="form-control" id="checkOut" name="checkOut" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="guests" class="form-label">Гости</label>
+                        <select class="form-select" id="guests" name="guests">
+                            <option value="1">1 гость</option>
+                            <option value="2" selected>2 гостя</option>
+                            <option value="3">3 гостя</option>
+                            <option value="4">4 гостя</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Найти номера</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Список отелей -->
+    <div class="row">
+        @foreach (var hotel in Model)
+        {
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <img src="@hotel.ImageUrl" class="card-img-top" alt="@hotel.Name" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@hotel.Name</h5>
+                        <p class="card-text text-muted">@hotel.Address</p>
+                        <p class="card-text">@hotel.Description</p>
+                        <div class="mb-2">
+                            <span class="badge bg-info">@hotel.RoomCount номеров</span>
+                            <span class="badge bg-success">от @hotel.MinPrice.ToString("C")</span>
+                        </div>
+                        <a href="/Hotels/Details/@hotel.Id" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Установка минимальной даты - сегодня
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkIn').min = today;
+        document.getElementById('checkOut').min = today;
+
+        // Автоматическая установка даты выезда
+        document.getElementById('checkIn').addEventListener('change', function() {
+            const checkIn = new Date(this.value);
+            const checkOut = new Date(checkIn);
+            checkOut.setDate(checkOut.getDate() + 1);
+            document.getElementById('checkOut').value = checkOut.toISOString().split('T')[0];
+            document.getElementById('checkOut').min = this.value;
+        });
+    </script>
+}
