@@ -24,9 +24,20 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
     options.Password.RequireNonAlphanumeric = false;
+    // Настройка путей для входа
+    options.SignIn.RequireConfirmedAccount = false;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
+
+// Настройка аутентификации cookies
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.LogoutPath = "/Identity/Account/Logout";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
