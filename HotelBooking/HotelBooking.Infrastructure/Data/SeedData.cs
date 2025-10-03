@@ -95,9 +95,9 @@ namespace HotelBooking.Infrastructure.Data
                         ImageUrl = "https://via.placeholder.com/400x250/10B981/FFFFFF?text=Business+Hotel",
                         Rooms = new List<Room>
                         {
-                            new Room { Number = "101", PricePerNight = 3500, Capacity = 1, Description = "Single Room for business travelers", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+101" },
-                            new Room { Number = "102", PricePerNight = 4500, Capacity = 2, Description = "Double Room with workspace", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+102" },
-                            new Room { Number = "103", PricePerNight = 6000, Capacity = 2, Description = "Executive Room", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+103" }
+                            new Room { Number = "101", PricePerNight = 350, Capacity = 1, Description = "Single Room for business travelers", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+101" },
+                            new Room { Number = "102", PricePerNight = 450, Capacity = 2, Description = "Double Room with workspace", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+102" },
+                            new Room { Number = "103", PricePerNight = 600, Capacity = 2, Description = "Executive Room", ImageUrl = "https://via.placeholder.com/300x200/34D399/FFFFFF?text=Room+103" }
                         }
                     },
                     new Hotel
@@ -108,9 +108,9 @@ namespace HotelBooking.Infrastructure.Data
                         ImageUrl = "https://via.placeholder.com/400x250/F59E0B/FFFFFF?text=Seaside+Resort",
                         Rooms = new List<Room>
                         {
-                            new Room { Number = "101", PricePerNight = 8000, Capacity = 4, Description = "Family Room with sea view", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Room+101" },
-                            new Room { Number = "201", PricePerNight = 15000, Capacity = 2, Description = "Premium Suite with jacuzzi", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Suite+201" },
-                            new Room { Number = "301", PricePerNight = 20000, Capacity = 3, Description = "Presidential Suite", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Presidential+Suite" }
+                            new Room { Number = "101", PricePerNight = 800, Capacity = 4, Description = "Family Room with sea view", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Room+101" },
+                            new Room { Number = "201", PricePerNight = 1500, Capacity = 2, Description = "Premium Suite with jacuzzi", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Suite+201" },
+                            new Room { Number = "301", PricePerNight = 2000, Capacity = 3, Description = "Presidential Suite", ImageUrl = "https://via.placeholder.com/300x200/FBBF24/FFFFFF?text=Presidential+Suite" }
                         }
                     }
                 };
