@@ -46,6 +46,18 @@ namespace HotelBooking.Infrastructure.Data
                     await userManager.AddToRoleAsync(adminUser, Roles.Administrator);
                 }
             }
+            else
+            {
+                // Reset password if user exists (for development)
+                var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+                await userManager.ResetPasswordAsync(adminUser, token, "Admin123!");
+                
+                // Ensure admin has admin role
+                if (!await userManager.IsInRoleAsync(adminUser, Roles.Administrator))
+                {
+                    await userManager.AddToRoleAsync(adminUser, Roles.Administrator);
+                }
+            }
 
             // Create test client user
             var clientEmail = "client@test.com";
@@ -64,6 +76,18 @@ namespace HotelBooking.Infrastructure.Data
 
                 var result = await userManager.CreateAsync(clientUser, "Client123!");
                 if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(clientUser, Roles.Client);
+                }
+            }
+            else
+            {
+                // Reset password if user exists (for development)
+                var token = await userManager.GeneratePasswordResetTokenAsync(clientUser);
+                await userManager.ResetPasswordAsync(clientUser, token, "Client123!");
+                
+                // Ensure client has client role
+                if (!await userManager.IsInRoleAsync(clientUser, Roles.Client))
                 {
                     await userManager.AddToRoleAsync(clientUser, Roles.Client);
                 }

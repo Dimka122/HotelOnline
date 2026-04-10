@@ -25,20 +25,22 @@
                         Вы можете оставлять отзывы только на отели, в которых останавливались.
                     </div>
 
-                    <form asp-action="Create" method="post">
+                    <form asp-action="Create" method="post" id="reviewForm">
                         <input type="hidden" name="hotelId" value="@hotel?.Id" />
 
                         <div class="mb-4">
-                            <label class="form-label">Оценка</label>
-                            <div class="rating-select">
-                                @for (int i = 5; i >= 1; i--)
+                            <label class="form-label">Оценка *</label>
+                            <div class="star-rating">
+                                @for (int i = 1; i <= 5; i++)
                                 {
-                                    <input type="radio" name="rating" value="@i" id="star@i" required />
-                                    <label for="star@i" title="@i звезд">
+                                    <input type="radio" name="rating" value="@i" id="star@i" class="star-input" />
+                                    <label for="star@i" class="star-label">
                                         <i class="bi bi-star-fill"></i>
                                     </label>
                                 }
                             </div>
+                            <input type="hidden" name="selectedRating" id="selectedRating" required />
+                            <div class="invalid-feedback" id="ratingError" style="display:none;">Пожалуйста, выберите оценку</div>
                         </div>
 
                         <div class="mb-3">
@@ -69,25 +71,63 @@
     </div>
 </div>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const starInputs = document.querySelectorAll('.star-input');
+    const starLabels = document.querySelectorAll('.star-label');
+    
+    // Обработка клика на звезду
+    starInputs.forEach(function(input) {
+        input.addEventListener('change', function() {
+            const selectedValue = parseInt(this.value);
+            
+            // Подсвечиваем звезды от 1 до выбранной
+            starLabels.forEach(function(label, index) {
+                // Инвертируем порядок, т.к. звезды идут от 5 к 1
+                const starValue = 5 - index;
+                if (starValue <= selectedValue) {
+                    label.style.color = '#ffc107';
+                } else {
+                    label.style.color = '#ddd';
+                }
+            });
+        });
+    });
+});
+
+// Валидация формы
+document.getElementById('reviewForm').addEventListener('submit', function(e) {
+    const rating = document.querySelector('input[name="rating"]:checked');
+    const hiddenInput = document.getElementById('selectedRating');
+    const errorDiv = document.getElementById('ratingError');
+    
+    if (!rating) {
+        e.preventDefault();
+        errorDiv.style.display = 'block';
+        return false;
+    }
+    
+    errorDiv.style.display = 'none';
+    hiddenInput.value = rating.value;
+});
+</script>
+
 <style>
-.rating-select {
+.star-rating {
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
+    flex-direction: row;
+    gap: 5px;
 }
-.rating-select input {
+.star-input {
     display: none;
 }
-.rating-select label {
+.star-label {
     cursor: pointer;
     font-size: 2rem;
     color: #ddd;
-    padding: 0 5px;
     transition: color 0.2s;
 }
-.rating-select label:hover,
-.rating-select label:hover ~ label,
-.rating-select input:checked ~ label {
+.star-label:hover {
     color: #ffc107;
 }
 </style>

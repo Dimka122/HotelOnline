@@ -17,6 +17,17 @@
                     <li>Prices from: $@Model.MinPrice to $@Model.MaxPrice</li>
                 </ul>
             </div>
+
+            <!-- Секция отзывов -->
+            <div class="mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4>Reviews</h4>
+                    <a asp-controller="Reviews" asp-action="Index" asp-route-hotelId="@Model.Id" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-star"></i> View Reviews
+                    </a>
+                </div>
+                <p class="text-muted">Check out what other guests say about this hotel.</p>
+            </div>
         </div>
         <div class="col-md-4">
             <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@Model.Name">

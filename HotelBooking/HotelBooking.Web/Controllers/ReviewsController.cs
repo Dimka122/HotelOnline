@@ -56,12 +56,20 @@ namespace HotelBooking.Web.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int hotelId, int rating, string comment)
+        public async Task<IActionResult> Create(int hotelId, int selectedRating, string comment)
         {
             try
             {
+                if (selectedRating < 1 || selectedRating > 5)
+                {
+                    ModelState.AddModelError("", "Пожалуйста, выберите оценку от 1 до 5 звезд");
+                    var hotel = await _hotelService.GetHotelByIdAsync(hotelId);
+                    ViewBag.Hotel = hotel;
+                    return View();
+                }
+
                 var userId = _userManager.GetUserId(User);
-                await _reviewService.CreateReviewAsync(userId, hotelId, rating, comment);
+                await _reviewService.CreateReviewAsync(userId, hotelId, selectedRating, comment);
                 
                 TempData["Success"] = "Отзыв успешно добавлен!";
                 return RedirectToAction("Index", new { hotelId });

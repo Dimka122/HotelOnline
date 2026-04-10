@@ -9,11 +9,13 @@ namespace HotelBooking.Web.Controllers
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
+        public AccountController(SignInManager<User> signInManager, UserManager<User> userManager, ILogger<AccountController> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -24,27 +26,53 @@ namespace HotelBooking.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password, string returnUrl = null)
+        public async Task<IActionResult> Login([FromForm] LoginViewModel model, string returnUrl = null)
         {
+            _logger.LogInformation("Login attempt for: {Email}", model.Email);
+            
             ViewData["ReturnUrl"] = returnUrl;
 
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
             {
-                var result = await _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: false);
+                ModelState.AddModelError(string.Empty, "Заполните все поля");
+                return View(model);
+            }
 
-                if (result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                _logger.LogWarning("User not found: {Email}", model.Email);
+                ModelState.AddModelError(string.Empty, "Неверный email или пароль");
+                return View(model);
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(
+                model.Email, 
+                model.Password, 
+                isPersistent: false, 
+                lockoutOnFailure: false);
+
+            _logger.LogInformation("Login result: {Succeeded}, IsLockedOut: {IsLockedOut}", result.Succeeded, result.IsLockedOut);
+
+            if (result.Succeeded)
+            {
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(returnUrl);
                 }
+                return RedirectToAction("Index", "Home");
+            }
 
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, "Аккаунт заблокирован");
+            }
+            else
+            {
                 ModelState.AddModelError(string.Empty, "Неверный email или пароль");
             }
 
-            return View();
+            return View(model);
         }
 
         [HttpGet]
@@ -55,27 +83,27 @@ namespace HotelBooking.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(string email, string password, string confirmPassword, string firstName, string lastName)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([FromForm] RegisterViewModel model)
         {
-            if (password != confirmPassword)
+            if (model.Password != model.ConfirmPassword)
             {
                 ModelState.AddModelError("", "Пароли не совпадают");
-                return View();
+                return View(model);
             }
 
             var user = new User
             {
-                UserName = email,
-                Email = email,
-                FirstName = firstName,
-                LastName = lastName
+                UserName = model.Email,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName
             };
 
-            var result = await _userManager.CreateAsync(user, password);
+            var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
             {
-                // Добавляем роль Client по умолчанию
                 await _userManager.AddToRoleAsync(user, "Client");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
@@ -86,7 +114,7 @@ namespace HotelBooking.Web.Controllers
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -96,5 +124,20 @@ namespace HotelBooking.Web.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+    }
+
+    public class LoginViewModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class RegisterViewModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
