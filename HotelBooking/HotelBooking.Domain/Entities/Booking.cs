@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HotelBooking.Domain.Enums;
 
 namespace HotelBooking.Domain.Entities
 {
@@ -15,7 +16,7 @@ namespace HotelBooking.Domain.Entities
         public DateTime CheckOutDate { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public string Status { get; set; } = "Confirmed"; // Confirmed, Cancelled, Completed
+        public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
         public virtual User User { get; set; }
         public virtual Room Room { get; set; }

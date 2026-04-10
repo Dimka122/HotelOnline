@@ -1,0 +1,110 @@
+@model IEnumerable<HotelBooking.Application.DTOs.ReviewDto>
+
+@{
+    ViewData["Title"] = "Отзывы - " + ViewBag.Hotel?.Name;
+    var hotel = ViewBag.Hotel as HotelBooking.Application.DTOs.HotelDto;
+    var avgRating = ViewBag.AverageRating as double? ?? 0;
+    var reviewCount = ViewBag.ReviewCount as int? ?? 0;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Hotels" asp-action="Index">Отели</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Hotels" asp-action="Details" asp-route-id="@hotel?.Id">@hotel?.Name</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Отзывы</li>
+        </ol>
+    </nav>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Отзывы об отеле @hotel?.Name</h1>
+        </div>
+        <div class="col-md-4 text-md-end">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-controller="Reviews" asp-action="Create" asp-route-hotelId="@hotel?.Id" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Оставить отзыв
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Рейтинг отеля -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-3 text-center">
+                    <h2 class="display-4 mb-0">@avgRating.ToString("F1")</h2>
+                    <div class="text-warning">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Round(avgRating))
+                            {
+                                <i class="bi bi-star-fill"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star"></i>
+                            }
+                        }
+                    </div>
+                    <small class="text-muted">@reviewCount отзывов</small>
+                </div>
+                <div class="col-md-9">
+                    @for (int star = 5; star >= 1; star--)
+                    {
+                        var count = Model.Count(r => r.Rating == star);
+                        var percent = reviewCount > 0 ? (count * 100.0 / reviewCount) : 0;
+                        <div class="d-flex align-items-center mb-1">
+                            <span class="me-2">@star</span>
+                            <i class="bi bi-star-fill text-warning me-2"></i>
+                            <div class="progress flex-grow-1" style="height: 8px;">
+                                <div class="progress-bar bg-warning" style="width: @percent%"></div>
+                            </div>
+                            <span class="ms-2 text-muted small">@count</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Список отзывов -->
+    @if (Model.Any())
+    {
+        foreach (var review in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">@review.UserName</h5>
+                            <div class="text-warning mb-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <small class="text-muted">@review.CreatedAt.ToString("dd MMM yyyy")</small>
+                    </div>
+                    <p class="card-text">@review.Comment</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Отзывов пока нет. Будьте первым, кто оставит отзыв!
+        </div>
+    }
+</div>

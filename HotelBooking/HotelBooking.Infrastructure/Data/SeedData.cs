@@ -143,7 +143,7 @@ new Hotel
                     CheckInDate = DateTime.Now.AddDays(7),
                     CheckOutDate = DateTime.Now.AddDays(10),
                     TotalPrice = room.PricePerNight * 3,
-                    Status = "Confirmed",
+                    Status = BookingStatus.Confirmed,
                     CreatedAt = DateTime.UtcNow
                 };
 

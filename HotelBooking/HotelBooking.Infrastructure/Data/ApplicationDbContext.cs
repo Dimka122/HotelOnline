@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using HotelBooking.Domain.Entities;
+using HotelBooking.Domain.Enums;
 
 namespace HotelBooking.Infrastructure.Data
 {
@@ -12,6 +13,7 @@ namespace HotelBooking.Infrastructure.Data
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -43,12 +45,32 @@ namespace HotelBooking.Infrastructure.Data
             {
                 entity.HasKey(b => b.Id);
                 entity.Property(b => b.TotalPrice).HasColumnType("decimal(18,2)");
-                entity.Property(b => b.Status).HasMaxLength(20);
+                entity.Property(b => b.Status).HasConversion<string>();
 
                 entity.HasOne(b => b.User)
                       .WithMany(u => u.Bookings)
                       .HasForeignKey(b => b.UserId)
                       .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            builder.Entity<Review>(entity =>
+            {
+                entity.HasKey(r => r.Id);
+                entity.Property(r => r.Rating).IsRequired();
+                entity.Property(r => r.Comment).HasMaxLength(1000);
+
+                entity.HasOne(r => r.Hotel)
+                      .WithMany()
+                      .HasForeignKey(r => r.HotelId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(r => r.User)
+                      .WithMany()
+                      .HasForeignKey(r => r.UserId)
+                      .OnDelete(DeleteBehavior.Cascade);
+
+                // Один отзыв от пользователя на отель
+                entity.HasIndex(r => new { r.HotelId, r.UserId }).IsUnique();
             });
         }
     }

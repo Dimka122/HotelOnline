@@ -1,0 +1,68 @@
+@model IEnumerable<HotelBooking.Application.DTOs.ReviewDto>
+
+@{
+    ViewData["Title"] = "Мои отзывы";
+}
+
+<div class="container py-4">
+    <h1 class="mb-4">Мои отзывы</h1>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        foreach (var review in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <h5 class="card-title mb-1">
+                                <a asp-controller="Hotels" asp-action="Details" asp-route-id="@review.HotelId">
+                                    @review.HotelName
+                                </a>
+                            </h5>
+                            <div class="text-warning mb-2">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= review.Rating)
+                                    {
+                                        <i class="bi bi-star-fill"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <small class="text-muted">@review.CreatedAt.ToString("dd MMM yyyy")</small>
+                    </div>
+                    <p class="card-text">@review.Comment</p>
+                    <form asp-action="Delete" asp-route-id="@review.Id" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                onclick="return confirm('Удалить этот отзыв?')">
+                            <i class="bi bi-trash"></i> Удалить
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Вы ещё не оставляли отзывы.
+        </div>
+        <a asp-controller="Hotels" asp-action="Index" class="btn btn-primary">
+            <i class="bi bi-search"></i> Выбрать отель
+        </a>
+    }
+</div>

@@ -2,6 +2,7 @@
 using HotelBooking.Application.Interfaces;
 using HotelBooking.Application.DTOs;
 using HotelBooking.Domain.Entities;
+using HotelBooking.Domain.Enums;
 using HotelBooking.Infrastructure.Data;
 
 namespace HotelBooking.Infrastructure.Services
@@ -42,7 +43,7 @@ namespace HotelBooking.Infrastructure.Services
                 CheckInDate = checkIn,
                 CheckOutDate = checkOut,
                 TotalPrice = totalPrice,
-                Status = "Confirmed",
+                Status = BookingStatus.Confirmed,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -58,8 +59,9 @@ namespace HotelBooking.Infrastructure.Services
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
                 TotalPrice = booking.TotalPrice,
-                Status = booking.Status,
-                CreatedAt = booking.CreatedAt
+                Status = booking.Status.ToString(),
+                CreatedAt = booking.CreatedAt,
+                UserId = userId
             };
         }
 
@@ -79,7 +81,7 @@ namespace HotelBooking.Infrastructure.Services
                     CheckInDate = b.CheckInDate,
                     CheckOutDate = b.CheckOutDate,
                     TotalPrice = b.TotalPrice,
-                    Status = b.Status,
+                    Status = b.Status.ToString(),
                     CreatedAt = b.CreatedAt
                 })
                 .ToListAsync();
@@ -103,9 +105,11 @@ namespace HotelBooking.Infrastructure.Services
                     CheckInDate = b.CheckInDate,
                     CheckOutDate = b.CheckOutDate,
                     TotalPrice = b.TotalPrice,
-                    Status = b.Status,
+                    Status = b.Status.ToString(),
                     CreatedAt = b.CreatedAt,
-                    UserEmail = b.User.Email // Добавим email пользователя для админки
+                    UserEmail = b.User.Email,
+                    UserName = b.User.FirstName + " " + b.User.LastName,
+                    UserId = b.UserId
                 })
                 .ToListAsync();
 
@@ -117,7 +121,7 @@ namespace HotelBooking.Infrastructure.Services
             var booking = await _context.Bookings.FindAsync(bookingId);
             if (booking != null)
             {
-                booking.Status = "Cancelled";
+                booking.Status = BookingStatus.Cancelled;
                 await _context.SaveChangesAsync();
             }
         }
@@ -141,7 +145,7 @@ namespace HotelBooking.Infrastructure.Services
                 CheckInDate = booking.CheckInDate,
                 CheckOutDate = booking.CheckOutDate,
                 TotalPrice = booking.TotalPrice,
-                Status = booking.Status,
+                Status = booking.Status.ToString(),
                 CreatedAt = booking.CreatedAt
             };
         }
@@ -150,7 +154,7 @@ namespace HotelBooking.Infrastructure.Services
         {
             var overlappingBookings = await _context.Bookings
                 .Where(b => b.RoomId == roomId &&
-                           b.Status == "Confirmed" &&
+                           b.Status == BookingStatus.Confirmed &&
                            ((checkIn >= b.CheckInDate && checkIn < b.CheckOutDate) ||
                             (checkOut > b.CheckInDate && checkOut <= b.CheckOutDate) ||
                             (checkIn <= b.CheckInDate && checkOut >= b.CheckOutDate)))

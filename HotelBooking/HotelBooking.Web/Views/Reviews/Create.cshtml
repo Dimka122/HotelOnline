@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "Оставить отзыв";
+    var hotel = ViewBag.Hotel as HotelBooking.Application.DTOs.HotelDto;
+}
+
+<div class="container py-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Hotels" asp-action="Index">Отели</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Hotels" asp-action="Details" asp-route-id="@hotel?.Id">@hotel?.Name</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Reviews" asp-action="Index" asp-route-hotelId="@hotel?.Id">Отзывы</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Новый отзыв</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Оставить отзыв об отеле @hotel?.Name</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 
+                        Вы можете оставлять отзывы только на отели, в которых останавливались.
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" name="hotelId" value="@hotel?.Id" />
+
+                        <div class="mb-4">
+                            <label class="form-label">Оценка</label>
+                            <div class="rating-select">
+                                @for (int i = 5; i >= 1; i--)
+                                {
+                                    <input type="radio" name="rating" value="@i" id="star@i" required />
+                                    <label for="star@i" title="@i звезд">
+                                        <i class="bi bi-star-fill"></i>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Отзыв</label>
+                            <textarea 
+                                name="comment" 
+                                id="comment" 
+                                class="form-control" 
+                                rows="5" 
+                                maxlength="1000"
+                                placeholder="Поделитесь своими впечатлениями об отеле..."
+                                required></textarea>
+                            <div class="form-text">Максимум 1000 символов</div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i> Отправить отзыв
+                            </button>
+                            <a asp-action="Index" asp-route-hotelId="@hotel?.Id" class="btn btn-outline-secondary">
+                                Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.rating-select {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+.rating-select input {
+    display: none;
+}
+.rating-select label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #ddd;
+    padding: 0 5px;
+    transition: color 0.2s;
+}
+.rating-select label:hover,
+.rating-select label:hover ~ label,
+.rating-select input:checked ~ label {
+    color: #ffc107;
+}
+</style>

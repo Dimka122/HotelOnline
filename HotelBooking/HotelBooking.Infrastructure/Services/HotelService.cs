@@ -2,6 +2,7 @@
 using HotelBooking.Application.Interfaces;
 using HotelBooking.Application.DTOs;
 using HotelBooking.Domain.Entities;
+using HotelBooking.Domain.Enums;
 using HotelBooking.Infrastructure.Data;
 
 namespace HotelBooking.Infrastructure.Services
@@ -65,7 +66,7 @@ namespace HotelBooking.Infrastructure.Services
                 .Where(r => r.Hotel.Address.Contains(city) &&
                            r.Capacity >= guests &&
                            !r.Bookings.Any(b =>
-                               b.Status == "Confirmed" &&
+                               b.Status == BookingStatus.Confirmed &&
                                ((checkIn >= b.CheckInDate && checkIn < b.CheckOutDate) ||
                                 (checkOut > b.CheckInDate && checkOut <= b.CheckOutDate) ||
                                 (checkIn <= b.CheckInDate && checkOut >= b.CheckOutDate))))

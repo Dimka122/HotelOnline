@@ -15,9 +15,11 @@ namespace HotelBooking.Application.DTOs
         public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public decimal TotalPrice { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; }  // Используем string для совместимости
         public DateTime CreatedAt { get; set; }
-        public string UserEmail { get; set; } // Для админки
+        public string UserEmail { get; set; }
+        public string UserName { get; set; }
+        public string UserId { get; set; }
     }
 
     public class CreateBookingDto
